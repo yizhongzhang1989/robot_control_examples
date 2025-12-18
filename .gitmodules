@@ -1,0 +1,6 @@
+[submodule "cartesian_controllers_ros2"]
+	path = cartesian_controllers_ros2
+	url = https://github.com/yizhongzhang1989/cartesian_controllers_ros2.git
+[submodule "duco_ros2_driver"]
+	path = duco_ros2_driver
+	url = https://github.com/yizhongzhang1989/duco_ros2_driver.git
