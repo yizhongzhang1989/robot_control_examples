@@ -6,8 +6,9 @@ This repository demonstrates cartesian controller integration with different rob
 
 - **cartesian_controllers_ros2/** - Generic cartesian controllers (motion, force, compliance)
 - **duco_ros2_driver/** - DUCO robot-specific hardware interface and MoveIt2 configuration
+- **ur_ros2_driver/** - Universal Robots driver (for UR3, UR5, UR10, UR16 series)
 
-Both are included as git submodules for modular management.
+All robot drivers are included as git submodules for modular management.
 
 ## System Requirements
 
@@ -47,6 +48,9 @@ sudo apt install -y \
     ros-humble-joint-state-broadcaster \
     ros-humble-joint-trajectory-controller \
     ros-humble-xacro
+
+# For Universal Robots (UR) only
+sudo apt install -y ros-humble-ur-client-library
 ```
 
 ### 3. Install Package Dependencies
@@ -57,7 +61,7 @@ source /opt/ros/humble/setup.bash
 
 # Install dependencies for all packages
 cd ~/Documents/robot_control_examples
-rosdep install --from-paths cartesian_controllers_ros2 duco_ros2_driver --ignore-src -y
+rosdep install --from-paths cartesian_controllers_ros2 duco_ros2_driver ur_ros2_driver --ignore-src -y
 ```
 
 ### 4. Build the Workspace
@@ -221,17 +225,19 @@ robot_control_examples/
 │   │   ├── cartesian_compliance_controller/
 │   │   └── cartesian_controller_base/
 │   └── cartesian_controller_tools/
-└── duco_ros2_driver/              (submodule)
-    └── src/
-        ├── duco_hardware/
-        ├── duco_gcr5_910_moveit_config/
-        │   ├── config/
-        │   │   ├── cartesian_controller_manager.yaml  # Cartesian controller config for DUCO
-        │   │   └── ros2_controllers.yaml              # Joint trajectory controller config
-        │   └── launch/
-        │       ├── cartesian_controller.launch.py     # Launch with Cartesian controllers
-        │       └── demo_ros2_control.launch.py        # Launch with MoveIt2
-        └── duco_support/
+├── duco_ros2_driver/              (submodule)
+│   └── src/
+│       ├── duco_hardware/
+│       ├── duco_gcr5_910_moveit_config/
+│       │   ├── config/
+│       │   │   ├── cartesian_controller_manager.yaml  # Cartesian controller config for DUCO
+│       │   │   └── ros2_controllers.yaml              # Joint trajectory controller config
+│       │   └── launch/
+│       │       ├── cartesian_controller.launch.py     # Launch with Cartesian controllers
+│       │       └── demo_ros2_control.launch.py        # Launch with MoveIt2
+│       └── duco_support/
+└── ur_ros2_driver/                (submodule - shallow clone)
+    └── ur_robot_driver/
 ```
 
 ### File Organization Philosophy
