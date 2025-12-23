@@ -1,0 +1,281 @@
+# Heecheol Kim | heecheolkim@microsoft.com | MSRA Tokyo | 2025-12-23
+
+# Cartesian controller configuration file used by launch.g1_dual_proxy.launch.py
+# Contains separate controller settings for left_arm and right_arm.
+# For each arm: controller_manager manages cartesian_motion_controller,
+# cartesian_compliance_controller, cartesian_force_controller,
+# force_torque_sensor_broadcaster, and joint_state_broadcaster.
+
+
+left_arm: # Namespace set to left_arm
+  # controller_manager configuration
+  controller_manager:
+    ros__parameters:
+      update_rate: 100
+
+      joint_state_broadcaster:
+        type: joint_state_broadcaster/JointStateBroadcaster
+
+      cartesian_motion_controller:
+        type: cartesian_motion_controller/CartesianMotionController
+
+      cartesian_compliance_controller:
+        type: cartesian_compliance_controller/CartesianComplianceController
+
+      cartesian_force_controller:
+        type: cartesian_force_controller/CartesianForceController
+
+      force_torque_sensor_broadcaster:
+        type: force_torque_sensor_broadcaster/ForceTorqueSensorBroadcaster
+
+      default_controller: cartesian_force_controller
+
+  # Individual controller settings
+  
+  # cartesian_force_controller: Controls end-effector force/torque (input: /target_wrench)
+  cartesian_force_controller:
+    ros__parameters:
+      end_effector_link: "Link7_l" # Target end-effector link (see urdf/g1_left_arm.urdf)
+      robot_base_link: "base_link_l" # Robot base link (G1: base_link_l at shoulder).
+                                      # For humanoid robots, use the arm base, not the whole body base
+      ft_sensor_ref_link: "Link7_l" # Link where the F/T sensor is attached
+      joints: # Joint list used for control (from urdf/g1_left_arm.urdf, maintain order)
+        - left_arm_joint1
+        - left_arm_joint2
+        - left_arm_joint3
+        - left_arm_joint4
+        - left_arm_joint5
+        - left_arm_joint6
+        - left_arm_joint7
+      command_interfaces:
+        - position # Use 'position' or 'velocity'. velocity supported on ros2_control robots.
+                   # Currently tested only with 'position' on G1.
+      solver:
+          error_scale: 5.0 # Increase to scale up all PD gains
+          publish_state_feedback: True
+      pd_gains:
+          # p: Proportional gain. Larger values = faster/stronger response to error
+          # d: Derivative gain
+          # Note: p and d must be float, not int
+          trans_x: {p: 0.5, d: 0.0} # X-axis translation gain
+          trans_y: {p: 0.5, d: 0.0} # Y-axis translation gain
+          trans_z: {p: 0.5, d: 0.0} # Z-axis translation gain
+          rot_x: {p: 25.0, d: 0.0} # X-axis rotation gain
+          rot_y: {p: 25.0, d: 0.0} # Y-axis rotation gain
+          rot_z: {p: 25.0, d: 0.0} # Z-axis rotation gain
+
+  force_torque_sensor_broadcaster:
+    ros__parameters:
+      sensor_name: ft_sensor_l
+      state_interface_names:
+        - force.x
+        - force.y
+        - force.z
+        - torque.x
+        - torque.y
+        - torque.z
+      frame_id: Link7_l
+
+  # cartesian_motion_controller: Controls end-effector position/orientation (input: /target_pose)
+  # Alternative to IK solver: Converts target end-effector pose to joint position commands
+  # based on the robot's current joint configuration
+  cartesian_motion_controller:
+    ros__parameters:
+      end_effector_link: "Link7_l" # See cartesian_force_controller for details
+      robot_base_link: "base_link_l"
+      joints: # See cartesian_force_controller for details
+        - left_arm_joint1
+        - left_arm_joint2
+        - left_arm_joint3
+        - left_arm_joint4
+        - left_arm_joint5
+        - left_arm_joint6
+        - left_arm_joint7
+      command_interfaces:
+        - position
+      solver:
+          error_scale: 1.0
+          iterations: 10 # Solver iteration count. More iterations = higher accuracy but longer computation
+          publish_state_feedback: True
+      pd_gains:
+          # See cartesian_force_controller for details
+          trans_x: {p: 1.0}
+          trans_y: {p: 1.0}
+          trans_z: {p: 1.0}
+          rot_x: {p: 0.5}
+          rot_y: {p: 0.5}
+          rot_z: {p: 0.5}
+
+  # cartesian_compliance_controller: Combines motion control with compliance.
+  # Controls end-effector position/orientation while responding flexibly to external forces/torques.
+  # Use stiffness parameter to adjust sensitivity to external forces/torques.
+  cartesian_compliance_controller:
+    ros__parameters:
+      end_effector_link: "Link7_l"
+      robot_base_link: "base_link_l"
+      compliance_ref_link: "Link7_l" # Reference link for compliance (typically same as end-effector link)
+      ft_sensor_ref_link: "Link7_l"
+      joints:
+        - left_arm_joint1
+        - left_arm_joint2
+        - left_arm_joint3
+        - left_arm_joint4
+        - left_arm_joint5
+        - left_arm_joint6
+        - left_arm_joint7
+      command_interfaces:
+        - position
+      solver:
+          error_scale: 5.0
+          iterations: 1
+          publish_state_feedback: True
+      pd_gains:
+          # trans_x: {p: 0.05, d: 0.005}
+          # trans_y: {p: 0.05, d: 0.005}
+          # trans_z: {p: 0.05, d: 0.005}
+          trans_x: {p: 0.05}
+          trans_y: {p: 0.05}
+          trans_z: {p: 0.05}
+          rot_x: {p: 5.0}
+          rot_y: {p: 5.0}
+          rot_z: {p: 5.0}
+      # stiffness: Higher values = stiffer response (less compliant)
+      # Lower values = more sensitive to external forces/torques (more compliant)
+      # Note: Very low values may cause final position error (~30mm) due to gravity sensor bias
+      stiffness:
+          trans_x: 900.0
+          trans_y: 900.0
+          trans_z: 900.0
+          rot_x: 50.0
+          rot_y: 50.0
+          rot_z: 50.0
+
+  joint_state_broadcaster:
+    ros__parameters:
+      publish_rate: 50
+
+# Right arm configuration. Details are identical to left_arm
+right_arm:
+  controller_manager:
+    ros__parameters:
+      update_rate: 100
+
+      joint_state_broadcaster:
+        type: joint_state_broadcaster/JointStateBroadcaster
+
+      cartesian_motion_controller:
+        type: cartesian_motion_controller/CartesianMotionController
+
+      cartesian_compliance_controller:
+        type: cartesian_compliance_controller/CartesianComplianceController
+
+      cartesian_force_controller:
+        type: cartesian_force_controller/CartesianForceController
+
+      force_torque_sensor_broadcaster:
+        type: force_torque_sensor_broadcaster/ForceTorqueSensorBroadcaster
+
+      default_controller: cartesian_force_controller
+
+  cartesian_force_controller:
+    ros__parameters:
+      end_effector_link: "Link7_r"
+      robot_base_link: "base_link_r"
+      ft_sensor_ref_link: "Link7_r"
+      joints:
+        - right_arm_joint1
+        - right_arm_joint2
+        - right_arm_joint3
+        - right_arm_joint4
+        - right_arm_joint5
+        - right_arm_joint6
+        - right_arm_joint7
+      command_interfaces:
+        - position
+      solver:
+          error_scale: 5.0
+          publish_state_feedback: True
+      pd_gains:
+          trans_x: {p: 0.5}
+          trans_y: {p: 0.5}
+          trans_z: {p: 0.5}
+          rot_x: {p: 25.0}
+          rot_y: {p: 25.0}
+          rot_z: {p: 25.0}
+
+  force_torque_sensor_broadcaster:
+    ros__parameters:
+      sensor_name: ft_sensor_r
+      state_interface_names:
+        - force.x
+        - force.y
+        - force.z
+        - torque.x
+        - torque.y
+        - torque.z
+      frame_id: Link7_r
+
+  cartesian_motion_controller:
+    ros__parameters:
+      end_effector_link: "Link7_r"
+      robot_base_link: "base_link_r"
+      joints:
+        - right_arm_joint1
+        - right_arm_joint2
+        - right_arm_joint3
+        - right_arm_joint4
+        - right_arm_joint5
+        - right_arm_joint6
+        - right_arm_joint7
+      command_interfaces:
+        - position
+      solver:
+          error_scale: 1.0
+          iterations: 10
+          publish_state_feedback: True
+      pd_gains:
+          trans_x: {p: 1.0}
+          trans_y: {p: 1.0}
+          trans_z: {p: 1.0}
+          rot_x: {p: 0.5}
+          rot_y: {p: 0.5}
+          rot_z: {p: 0.5}
+
+  cartesian_compliance_controller:
+    ros__parameters:
+      end_effector_link: "Link7_r"
+      robot_base_link: "base_link_r"
+      compliance_ref_link: "Link7_r"
+      ft_sensor_ref_link: "Link7_r"
+      joints:
+        - right_arm_joint1
+        - right_arm_joint2
+        - right_arm_joint3
+        - right_arm_joint4
+        - right_arm_joint5
+        - right_arm_joint6
+        - right_arm_joint7
+      command_interfaces:
+        - position
+      solver:
+          error_scale: 5.0
+          iterations: 1
+          publish_state_feedback: True
+      pd_gains:
+          trans_x: {p: 0.05}
+          trans_y: {p: 0.05}
+          trans_z: {p: 0.05}
+          rot_x: {p: 5.0}
+          rot_y: {p: 5.0}
+          rot_z: {p: 5.0}
+      stiffness:
+          trans_x: 900.0
+          trans_y: 900.0
+          trans_z: 900.0
+          rot_x: 50.0
+          rot_y: 50.0
+          rot_z: 50.0
+
+  joint_state_broadcaster:
+    ros__parameters:
+      publish_rate: 50

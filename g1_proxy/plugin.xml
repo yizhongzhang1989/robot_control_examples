@@ -1,0 +1,19 @@
+<library path="g1_proxy">
+  <!-- <class
+    name="g1_proxy/FakeSystem"
+    type="g1_proxy::FakeSystem"
+    base_class_type="hardware_interface::SystemInterface">
+    <description>
+      Fake Hardware Interface that bridges to a real robot node via ROS 2 topics.
+    </description>
+  </class> -->
+  
+  <class
+    name="g1_proxy/ProxySystem"
+    type="g1_proxy::ProxySystem"
+    base_class_type="hardware_interface::SystemInterface">
+    <description>
+      Proxy Hardware Interface for dual-arm control via ROS 2 topics.
+    </description>
+  </class>
+</library>

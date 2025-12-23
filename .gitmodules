@@ -4,3 +4,7 @@
 [submodule "duco_ros2_driver"]
 	path = duco_ros2_driver
 	url = https://github.com/yizhongzhang1989/duco_ros2_driver.git
+[submodule "g1_proxy/third_party/RobotControl-G1"]
+	path = g1_proxy/third_party/RobotControl-G1
+	url = git@github.com:msraeai/RobotControl-G1.git
+	branch = liluo/iros-challenge

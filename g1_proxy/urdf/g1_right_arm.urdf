@@ -1,0 +1,319 @@
+<?xml version="1.0"?>
+<robot name="A2D">
+  <!-- 右臂的所有link和joint定义 -->
+  <link
+    name="base_link_r">
+    <inertial>
+      <origin
+        xyz="0.00020641 -0.00057488 0.034396"
+        rpy="0 0 0" />
+      <mass
+        value="0.37595" />
+      <inertia
+        ixx="0.00024335"
+        ixy="1.2188E-06"
+        ixz="2.4281E-06"
+        iyy="0.00024039"
+        iyz="-6.6932E-06"
+        izz="0.00032195" />
+    </inertial>
+  </link>
+  <link
+    name="Link1_r">
+    <inertial>
+      <origin
+        xyz="0.0013193 0.00016098 0.018211"
+        rpy="0 0 0" />
+      <mass
+        value="0.48414" />
+      <inertia
+        ixx="0.000726"
+        ixy="2.4165E-06"
+        ixz="-7.7713E-06"
+        iyy="0.00066689"
+        iyz="1.2143E-06"
+        izz="0.00028434" />
+    </inertial>
+  </link>
+  <joint
+    name="right_arm_joint1"
+    type="revolute">
+    <origin
+      xyz="0 0 0.188"
+      rpy="-3.1416 0 0" />
+    <parent
+      link="base_link_r" />
+    <child
+      link="Link1_r" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="60"
+      velocity="10" />
+  </joint>
+  <link
+    name="Link2_r">
+    <inertial>
+      <origin
+        xyz="0.00012037 -0.088102 -0.0062668"
+        rpy="0 0 0" />
+      <mass
+        value="0.31993" />
+      <inertia
+        ixx="0.00033251"
+        ixy="-1.2043E-06"
+        ixz="-5.3938E-07"
+        iyy="0.00022098"
+        iyz="4.5816E-05"
+        izz="0.00031325" />
+    </inertial>
+  </link>
+  <joint
+    name="right_arm_joint2"
+    type="revolute">
+    <origin
+      xyz="0 0 0"
+      rpy="1.5708 0 -1.5708" />
+    <parent
+      link="Link1_r" />
+    <child
+      link="Link2_r" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-2.09"
+      upper="2.09"
+      effort="60"
+      velocity="10" />
+  </joint>
+  <link
+    name="Link3_r">
+    <inertial>
+      <origin
+        xyz="-3.7545E-06 -0.00012549 -0.035846"
+        rpy="0 0 0" />
+      <mass
+        value="0.34932" />
+      <inertia
+        ixx="0.00084957"
+        ixy="-6.2047E-11"
+        ixz="1.3496E-08"
+        iyy="0.00082652"
+        iyz="2.8949E-07"
+        izz="0.00021145" />
+    </inertial>
+  </link>
+  <joint
+    name="right_arm_joint3"
+    type="revolute">
+    <origin
+      xyz="0 -0.305 0"
+      rpy="1.5708 1.5708 0" />
+    <parent
+      link="Link2_r" />
+    <child
+      link="Link3_r" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="60"
+      velocity="10" />
+  </joint>
+  <link
+    name="Link4_r">
+    <inertial>
+      <origin
+        xyz="1.9102E-06 0.071943 -0.0054646"
+        rpy="0 0 0" />
+      <mass
+        value="0.1848" />
+      <inertia
+        ixx="0.00014343"
+        ixy="-1.7316E-08"
+        ixz="-3.4456E-09"
+        iyy="9.0442E-05"
+        iyz="-2.1917E-05"
+        izz="0.0001381" />
+    </inertial>
+  </link>
+  <joint
+    name="right_arm_joint4"
+    type="revolute">
+    <origin
+      xyz="0 0 0"
+      rpy="1.5708 0 -3.1416" />
+    <parent
+      link="Link3_r" />
+    <child
+      link="Link4_r" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-1.483529864"
+      upper="1.832595715"
+      effort="60"
+      velocity="10" />
+  </joint>
+  <link
+    name="Link5_r">
+    <inertial>
+      <origin
+        xyz="4.0146E-06 -6.7798E-05 -0.012877"
+        rpy="0 0 0" />
+      <mass
+        value="0.1775" />
+      <inertia
+        ixx="0.00012838"
+        ixy="-3.4874E-09"
+        ixz="6.9591E-09"
+        iyy="0.00013741"
+        iyz="3.1477E-07"
+        izz="6.2102E-05" />
+    </inertial>
+  </link>
+  <joint
+    name="right_arm_joint5"
+    type="revolute">
+    <origin
+      xyz="0 0.1975 0"
+      rpy="1.5708 0 -3.1416" />
+    <parent
+      link="Link4_r" />
+    <child
+      link="Link5_r" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="30"
+      velocity="10" />
+  </joint>
+  <link
+    name="Link6_r">
+    <inertial>
+      <origin
+        xyz="-2.4946E-06 -0.10227 -0.0029098"
+        rpy="0 0 0" />
+      <mass
+        value="0.17825" />
+      <inertia
+        ixx="0.00013761"
+        ixy="-2.7933E-11"
+        ixz="6.9889E-09"
+        iyy="8.0777E-05"
+        iyz="2.0194E-05"
+        izz="0.00012814" />
+    </inertial>
+  </link>
+  <joint
+    name="right_arm_joint6"
+    type="revolute">
+    <origin
+      xyz="0 0 0"
+      rpy="-1.5708 0 3.1416" />
+    <parent
+      link="Link5_r" />
+    <child
+      link="Link6_r" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-1.745329252"
+      upper="1.745329252"
+      effort="30"
+      velocity="10" />
+  </joint>
+  <link
+    name="Link7_r">
+    <inertial>
+      <origin
+        xyz="0.0002265 0.00012031 -0.017205"
+        rpy="0 0 0" />
+      <mass
+        value="0.06158" />
+      <inertia
+        ixx="1.8328E-05"
+        ixy="-1.1354E-07"
+        ixz="-7.7825E-08"
+        iyy="1.8259E-05"
+        iyz="-8.2338E-08"
+        izz="2.8547E-05" />
+    </inertial>
+  </link>
+  <joint
+    name="right_arm_joint7"
+    type="revolute">
+    <origin
+      xyz="0 -0.181 0"
+      rpy="-1.5708 0 3.1416" />
+    <parent
+      link="Link6_r" />
+    <child
+      link="Link7_r" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="30"
+      velocity="10" />
+  </joint>
+
+  <!-- ros2_control configuration -->
+<ros2_control name="ProxyRobotSystem" type="system">
+    <hardware>
+      <plugin>g1_proxy/ProxySystem</plugin>
+      <param name="arm_id">right_arm</param>
+    </hardware>
+    
+    <joint name="right_arm_joint1">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="right_arm_joint2">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="right_arm_joint3">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="right_arm_joint4">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="right_arm_joint5">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="right_arm_joint6">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="right_arm_joint7">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <sensor name="ft_sensor_r">
+      <state_interface name="force.x"/>
+      <state_interface name="force.y"/>
+      <state_interface name="force.z"/>
+      <state_interface name="torque.x"/>
+      <state_interface name="torque.y"/>
+      <state_interface name="torque.z"/>
+    </sensor>
+  </ros2_control>
+
+</robot>
