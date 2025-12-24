@@ -118,37 +118,42 @@ This launch:
 Unlike DUCO examples, G1 uses arm-scoped controller managers.
 
 Example (right arm):
-
+```bash
   /right_arm/controller_manager
-
+```
 Always specify --controller-manager explicitly.
 
 Default controller:
   cartesian_compliance_controller
 
 List controllers:
-
+```bash
   ros2 control list_controllers \\
     --controller-manager /right_arm/controller_manager
+```
 
 Switch compliance → force:
-
+```bash
   ros2 control switch_controllers \\
     --controller-manager /right_arm/controller_manager \\
     --deactivate cartesian_compliance_controller \\
     --activate cartesian_force_controller
+```
 
 ### 5. Command Topics
 
 Pose command topic:
-
+```bash
   /left_arm/target_frame_left
-  or
+```
+or
+```bash
   /right_arm/target_frame_right
-  Type: geometry_msgs/msg/PoseStamped
+```
+Type: geometry_msgs/msg/PoseStamped
 
 Example:
-
+```bash
   ros2 topic pub -r 10 /left_arm/target_frame_left geometry_msgs/msg/PoseStamped '
   header:
     frame_id: base_link_l
@@ -161,20 +166,24 @@ Example:
       x: 0.029901469221476695
       y: 0.6291000972601712
       z: 0.016560979815337943
-      w: 0.7765724072571701'
+      w: 0.7765724072571701
+'
+```
 
 Wrench command topic:
-
+```bash
   /left_arm/target_wrench_left
-  or
+```
+or
+```bash
   /right_arm/target_wrench_right
-
+```
   Type: geometry_msgs/msg/WrenchStamped
 
 Frame MUST be end-effector link.
 
 Example:
-
+```bash
   ros2 topic pub -r 10 /left_arm/target_wrench_left geometry_msgs/msg/WrenchStamped '
   header:
     frame_id: Link7_l
@@ -186,4 +195,6 @@ Example:
     torque:
       x: 0.0
       y: 0.0
-      z: 0.0'
+      z: 0.0
+'
+```
